@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OneCloud – Upload Securely</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #ffffff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: #1f1f1f;
+      color: white;
+      border-bottom: 1px solid #333;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.6rem;
+      color: #00bfff;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav a, .nav button {
+      background: none;
+      border: 1px solid #444;
+      padding: 8px 14px;
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .nav button:hover, .nav a:hover {
+      background: #2c2c2c;
+      border-color: #00bfff;
+    }
+
+    .hero {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.6rem;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: #bbbbbb;
+      margin-bottom: 30px;
+    }
+
+    .upload-bar {
+      display: none;
+      background: #1e1e1e;
+      border: 1px solid #333;
+      padding: 15px;
+      margin: 30px auto 0;
+      max-width: 400px;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      color: #00ff88;
+    }
+
+    .upload-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #00bfff;
+      color: #121212;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .upload-button:hover {
+      background: #0099cc;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">OneCloud</div>
+    <div class="nav">
+      <a href="view.html">📄 List</a>
+      <button id="loginBtn">🔐 Login / Sign Up</button>
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Send large files securely from any device</h1>
+    <p>
+      With OneCloud, you can upload and share files instantly – encrypted, fast, and reliable. Perfect for work, teams,
+      and backups without the limitations of email.
+    </p>
+
+    <div class="upload-bar" id="uploadStatus"></div>
+
+    <button class="upload-button" onclick="document.getElementById('fileInput').click()">⬆️ Upload Files</button>
+    <input type="file" id="fileInput" style="display:none" />
+  </div>
+
+  <!-- Login/Signup Popup -->
+  <div id="loginPopup" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);align-items:center;justify-content:center;z-index:9999;">
+    <div style="background:#222;padding:2rem;border-radius:8px;text-align:center;max-width:300px;width:100%;color:white">
+      <h2>Login / Sign Up</h2>
+      <input type="text" id="username" placeholder="Username" style="width:100%;margin-bottom:10px;padding:8px" />
+      <input type="password" id="password" placeholder="Password" style="width:100%;margin-bottom:10px;padding:8px" />
+      <div style="display:flex;gap:10px;justify-content:center;">
+        <button onclick="signup()" style="padding:8px 16px;background:#00bfff;border:none;color:#121212;border-radius:4px;cursor:pointer">Sign Up</button>
+        <button onclick="login()" style="padding:8px 16px;background:#0099cc;border:none;color:#fff;border-radius:4px;cursor:pointer">Login</button>
+      </div>
+      <br />
+      <button onclick="document.getElementById('loginPopup').style.display='none'" style="margin-top:10px;background:none;border:none;color:#aaa;cursor:pointer">❌ Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const user = localStorage.getItem("username");
+    if (user) {
+      document.getElementById("uploadStatus").textContent = `Welcome back, ${user}! Start uploading your files.`;
+      document.getElementById("uploadStatus").style.display = 'block';
+    }
+  </script>
+</body>
+</html>

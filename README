@@ -1,69 +1,23 @@
-# ☁️ Serverless Cloud Storage
+# 🚀 Serverless Cloud Storage
 
-A fully serverless cloud storage web app built using AWS services. Users can sign up, log in, upload files, and view or download their uploaded files — all via a sleek web interface hosted on S3.
-
----
-
-## 🚀 Tech Stack
-
-- **Frontend:** HTML, CSS, JavaScript (Vanilla)
-- **Backend:** AWS Lambda + API Gateway
-- **Authentication:** Simple login/signup stored in DynamoDB
-- **Storage:** Amazon S3 (Pre-Signed Upload & Download URLs)
-- **Database:** Amazon DynamoDB
-- **Hosting:** Static S3 Website Hosting (with optional CloudFront)
+A fully serverless file storage web app built using **AWS Lambda**, **API Gateway**, **S3**, **DynamoDB**, and static frontend files hosted on **S3**.
 
 ---
 
-## ✨ Features
+## 🌟 Features
 
-- 🔐 User Signup/Login (stored securely in DynamoDB)
-- 📤 File Upload with real-time progress bar
-- 📂 List all uploaded files
-- ⬇️ Download files via pre-signed URLs
-- 🌐 Fully serverless (no EC2 or traditional servers)
-- 🪄 Clean and responsive UI
-- 🔒 Access control using username (stored in localStorage)
-
----
-
-## 📁 Project Structure
-
-```
-📦 serverless-cloud-storage
-├── index.html         # Main page for login & upload
-├── view.html          # File viewing interface
-├── app.js             # Handles login, upload, signup logic
-├── lambda/
-│   ├── signupUser.py
-│   ├── loginUser.py
-│   ├── generateUploadURL.py
-│   ├── uploadFile.py
-│   ├── listFiles.py
-│   └── downloadFile.py
-├── UserData (DynamoDB table)
-├── UserFiles (DynamoDB table)
-└── onecloud-user-files (S3 bucket for storing files)
-```
-
----
-
-## 🧪 Lambda Functions Overview
-
-| Function Name        | Description                           |
-|----------------------|----------------------------------------|
-| `signupUser`         | Registers a new user in `UserData`     |
-| `loginUser`          | Authenticates user credentials         |
-| `generateUploadURL`  | Creates pre-signed S3 URL for uploads  |
-| `uploadFile`         | Saves uploaded file metadata           |
-| `listFiles`          | Lists all files uploaded by a user     |
-| `downloadFile`       | Generates download URL from S3         |
+- 🔐 User Sign-Up & Login
+- ☁️ Upload files directly to S3 using pre-signed URLs
+- 📂 Store file metadata in DynamoDB
+- 🗂️ View uploaded files and download them anytime
+- ⚡ Serverless backend (no servers needed)
+- 🌐 Static frontend (HTML + JS) hosted on S3
 
 ---
 
 ## 🖼️ Screenshots
 
-### 🔐 Login & File Upload Page  
+### 🔐 Login & Upload Page  
 ![Login & Upload](https://github.com/ujer23/serverless-Cloud-storage/assets/87264167/69ec69f6-e0cb-42d0-a570-4300a43d51b3)
 
 ### 📁 View Uploaded Files  
@@ -71,46 +25,90 @@ A fully serverless cloud storage web app built using AWS services. Users can sig
 
 ---
 
-## 🛠️ Setup Instructions
+## 🧩 AWS Services Used
 
-1. **Clone the repo**
-   ```bash
-   git clone https://github.com/ujer23/serverless-Cloud-storage.git
-   cd serverless-Cloud-storage
-   ```
-
-2. **Deploy Lambda functions**  
-   Zip each function and deploy them in AWS Lambda under the correct names.
-
-3. **Set up DynamoDB**
-   - Table: `UserData` (Primary key: `userid`)
-   - Table: `UserFiles` (Partition key: `userid`, Sort key: `fileid`)
-
-4. **Create S3 Bucket**
-   - Bucket: `onecloud-user-files` (for file uploads)
-   - Enable static hosting (optional) for frontend
-
-5. **Configure API Gateway**
-   - Create routes: `/signupUser`, `/loginUser`, `/generateUploadURL`, etc.
-   - Enable CORS for all routes
-
-6. **Upload Frontend**
-   - Upload `index.html`, `view.html`, and `app.js` to your S3 static hosting bucket.
+| Service     | Purpose                                    |
+|-------------|--------------------------------------------|
+| **S3**      | File storage & static website hosting      |
+| **Lambda**  | Backend logic (auth, upload, list, download) |
+| **API Gateway** | Expose Lambda as REST API endpoints   |
+| **DynamoDB**| Store user data and file metadata          |
 
 ---
 
-## 📌 Example User Flow
+## 📁 Project Structure
 
-1. User opens website → logs in or signs up  
-2. Uploads file → gets uploaded to S3 via pre-signed URL  
-3. Metadata saved in DynamoDB  
-4. User visits `view.html` → sees all files  
-5. Clicks download → gets pre-signed S3 download link
+```
+📦 serverless-Cloud-storage/
+├── index.html          # Home page with login & file upload
+├── view.html           # View uploaded files
+├── app.js              # All JavaScript logic
+├── README.md           # Project documentation
+└── lambda/             # Lambda function code (optional)
+```
+
+---
+
+## 🚀 How It Works
+
+1. User signs up or logs in using a username/password.
+2. User uploads a file → JS requests a **pre-signed URL** from the backend.
+3. JS uses that URL to upload the file directly to **S3**.
+4. Metadata (filename, size, S3 key, time) is stored in **DynamoDB**.
+5. On the “View” page, metadata is fetched and files can be downloaded using **signed URLs**.
 
 ---
 
-## 📎 License
+## 🔧 Deployment Steps
 
-This project is open source and free to use. You can build your own secure S3-based file manager using this template.
+### 1. **S3 Buckets**
+- Create:
+  - `onecloud-user-files` – store uploaded files.
+  - `onecloud-frontend-site` – host the frontend.
+- Enable **static website hosting** on `onecloud-frontend-site`.
+
+### 2. **DynamoDB Tables**
+- `UserData`  
+  - Partition key: `userid`
+- `UserFiles`  
+  - Partition key: `userid`  
+  - Sort key (optional but useful): `fileid`
+
+### 3. **Lambda Functions**
+Deploy these Lambda functions (Python 3.12 recommended):
+- `signupUser`
+- `loginUser`
+- `generateUploadURL`
+- `uploadFile` (saves metadata)
+- `listFiles`
+- `downloadFile`
+
+### 4. **API Gateway**
+- Create a **REST API** with the `/prod` stage.
+- Setup endpoints for each Lambda.
+- Enable **CORS** for all methods.
+
+### 5. **Frontend**
+- Upload `index.html`, `view.html`, and `app.js` to your S3 static site bucket.
+- Set `API_BASE` in `app.js`:
+  ```js
+  const API_BASE = "https://<your-api-id>.execute-api.<region>.amazonaws.com/prod";
+  ```
 
 ---
+
+## ✨ Live Demo
+
+> [Add your live site link here if hosted]
+
+---
+
+## 🙌 Author
+
+Made with 💻 by [@ujer23](https://github.com/ujer23)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.

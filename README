@@ -1,0 +1,116 @@
+# ☁️ Serverless Cloud Storage
+
+A fully serverless cloud storage web app built using AWS services. Users can sign up, log in, upload files, and view or download their uploaded files — all via a sleek web interface hosted on S3.
+
+---
+
+## 🚀 Tech Stack
+
+- **Frontend:** HTML, CSS, JavaScript (Vanilla)
+- **Backend:** AWS Lambda + API Gateway
+- **Authentication:** Simple login/signup stored in DynamoDB
+- **Storage:** Amazon S3 (Pre-Signed Upload & Download URLs)
+- **Database:** Amazon DynamoDB
+- **Hosting:** Static S3 Website Hosting (with optional CloudFront)
+
+---
+
+## ✨ Features
+
+- 🔐 User Signup/Login (stored securely in DynamoDB)
+- 📤 File Upload with real-time progress bar
+- 📂 List all uploaded files
+- ⬇️ Download files via pre-signed URLs
+- 🌐 Fully serverless (no EC2 or traditional servers)
+- 🪄 Clean and responsive UI
+- 🔒 Access control using username (stored in localStorage)
+
+---
+
+## 📁 Project Structure
+
+```
+📦 serverless-cloud-storage
+├── index.html         # Main page for login & upload
+├── view.html          # File viewing interface
+├── app.js             # Handles login, upload, signup logic
+├── lambda/
+│   ├── signupUser.py
+│   ├── loginUser.py
+│   ├── generateUploadURL.py
+│   ├── uploadFile.py
+│   ├── listFiles.py
+│   └── downloadFile.py
+├── UserData (DynamoDB table)
+├── UserFiles (DynamoDB table)
+└── onecloud-user-files (S3 bucket for storing files)
+```
+
+---
+
+## 🧪 Lambda Functions Overview
+
+| Function Name        | Description                           |
+|----------------------|----------------------------------------|
+| `signupUser`         | Registers a new user in `UserData`     |
+| `loginUser`          | Authenticates user credentials         |
+| `generateUploadURL`  | Creates pre-signed S3 URL for uploads  |
+| `uploadFile`         | Saves uploaded file metadata           |
+| `listFiles`          | Lists all files uploaded by a user     |
+| `downloadFile`       | Generates download URL from S3         |
+
+---
+
+## 🖼️ Screenshots
+
+### 🔐 Login & File Upload Page  
+![Login & Upload](https://github.com/ujer23/serverless-Cloud-storage/assets/87264167/69ec69f6-e0cb-42d0-a570-4300a43d51b3)
+
+### 📁 View Uploaded Files  
+![View Files](https://github.com/ujer23/serverless-Cloud-storage/assets/87264167/28a51b00-1446-420e-8256-6f4608b3dc8f)
+
+---
+
+## 🛠️ Setup Instructions
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/ujer23/serverless-Cloud-storage.git
+   cd serverless-Cloud-storage
+   ```
+
+2. **Deploy Lambda functions**  
+   Zip each function and deploy them in AWS Lambda under the correct names.
+
+3. **Set up DynamoDB**
+   - Table: `UserData` (Primary key: `userid`)
+   - Table: `UserFiles` (Partition key: `userid`, Sort key: `fileid`)
+
+4. **Create S3 Bucket**
+   - Bucket: `onecloud-user-files` (for file uploads)
+   - Enable static hosting (optional) for frontend
+
+5. **Configure API Gateway**
+   - Create routes: `/signupUser`, `/loginUser`, `/generateUploadURL`, etc.
+   - Enable CORS for all routes
+
+6. **Upload Frontend**
+   - Upload `index.html`, `view.html`, and `app.js` to your S3 static hosting bucket.
+
+---
+
+## 📌 Example User Flow
+
+1. User opens website → logs in or signs up  
+2. Uploads file → gets uploaded to S3 via pre-signed URL  
+3. Metadata saved in DynamoDB  
+4. User visits `view.html` → sees all files  
+5. Clicks download → gets pre-signed S3 download link
+
+---
+
+## 📎 License
+
+This project is open source and free to use. You can build your own secure S3-based file manager using this template.
+
+---

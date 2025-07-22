@@ -17,11 +17,7 @@ A fully serverless file storage web app built using **AWS Lambda**, **API Gatewa
 
 ## 🖼️ Screenshots
 
-### 🔐 Login & Upload Page  
-![Login & Upload](https://github.com/ujer23/serverless-Cloud-storage/assets/87264167/69ec69f6-e0cb-42d0-a570-4300a43d51b3)
-
-### 📁 View Uploaded Files  
-![View Files](https://github.com/ujer23/serverless-Cloud-storage/assets/87264167/28a51b00-1446-420e-8256-6f4608b3dc8f)
+https://github.com/ujer23/serverless-Cloud-storage/issues/1
 
 ---
 
@@ -92,7 +88,7 @@ Deploy these Lambda functions (Python 3.12 recommended):
 - Upload `index.html`, `view.html`, and `app.js` to your S3 static site bucket.
 - Set `API_BASE` in `app.js`:
   ```js
-  const API_BASE = "https://<your-api-id>.execute-api.<region>.amazonaws.com/prod";
+  const API_BASE = "Your_API_Link";
   ```
 
 ---
